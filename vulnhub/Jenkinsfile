@@ -2,7 +2,7 @@ pipeline {
   agent any 
 
   environment {
-    APP_IMAGE = "my-app-image:latest"
+    APP_IMAGE = "vulhub/flask:1.1.1"
     SCANNER_IMAGE = "maratheamol2310/rbvm:latest"
   }
 
@@ -21,7 +21,7 @@ pipeline {
       }
     }
 
-    stage('🛡️ Run RBVM Scanner') {
+    stage('Run RBVM Scanner') {
       steps {
         sh '''
           echo "Pulling scanner image..."
@@ -45,20 +45,20 @@ pipeline {
       }
     }
 
-    stage('📦 Push Artifact (Placeholder)') {
+    stage('Push Artifact (Placeholder)') {
       steps {
-        echo '🎯 [Simulated] Pushing built image and reports to Nexus/Artifactory...'
+        echo '[Simulated] Pushing built image and reports to Nexus/Artifactory...'
         sleep 2
       }
     }
 
-    stage('🔔 Notify Security Team (Placeholder)') {
+    stage('Notify Security Team (Placeholder)') {
       steps {
-        echo '📣 [Simulated] Sending Slack/email alert to security team...'
+        echo '[Simulated] Sending Slack/email alert to security team...'
         sleep 2
       }
     }
-    
+
     stage('Archive Prioritized CVEs') {
       steps {
         archiveArtifacts artifacts: 'target/prioritized_cves.json', fingerprint: true
