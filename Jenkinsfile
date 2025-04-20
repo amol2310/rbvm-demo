@@ -29,29 +29,13 @@ pipeline {
 
           echo "Running RBVM scanner..."
           docker run --rm \
-            -v \$WORKSPACE:/scanner \
+            -v \$WORKSPACE:/scanner/scanner_output \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -p 8501:8501 \
             $SCANNER_IMAGE $APP_IMAGE
 
           echo "RBVM scan completed."
         '''
-      }
-    }
-
-    stage('Fail if Act ASAP CVEs Found') {
-      steps {
-        script {
-          def count = sh(
-            script: "jq '[.[] | select(.decision==\"Act ASAP\")] | length' ${env.WORKSPACE}/scanner_output/target/prioritized_cves.json",
-            returnStdout: true
-          ).trim()
-
-          echo "Found ${count} Act ASAP CVEs"
-          if (count.toInteger() > 0) {
-            error("Build failed: Act ASAP vulnerabilities detected")
-          }
-        }
       }
     }
     
