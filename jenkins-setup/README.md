@@ -26,6 +26,11 @@ Then open:
 
 ```bash
 docker exec jenkins-rbvm cat /var/jenkins_home/secrets/initialAdminPassword
+
+#IF above command doesn't work
+
+docker exec -it jenkins-rbvm bash
+cat /var/jenkins_home/secrets/initialAdminPassword
 ```
 
 Paste the password into the Jenkins UI and complete setup.
@@ -114,4 +119,4 @@ python3.11 --version
 
 ## ✍️ Author
 
-Created by [Amol Marathe](https://github.com/amolmarathe) for DevSecOps MTech Dissertation.
+Created by [Amol Marathe](https://github.com/amol2310) for DevSecOps MTech Dissertation.
