@@ -29,10 +29,8 @@ pipeline {
 
           echo "Running RBVM scanner..."
           docker run --rm \
-            -v $WORKSPACE:/scanner \
-            -v /var/run/docker.sock:/var/run/docker.sock \
             -p 8501:8501 \
-            $SCANNER_IMAGE $APP_IMAGE
+            $SCANNER_IMAGE $APP_IMAGE 
 
           echo "Checking for Act ASAP CVEs..."
           count=$(jq '[.[] | select(.decision=="Act ASAP")] | length' decision_engine/prioritized_cves.json)
@@ -56,12 +54,6 @@ pipeline {
       steps {
         echo '[Simulated] Sending Slack/email alert to security team...'
         sleep 2
-      }
-    }
-
-    stage('Archive Prioritized CVEs') {
-      steps {
-        archiveArtifacts artifacts: 'target/prioritized_cves.json', fingerprint: true
       }
     }
   }
