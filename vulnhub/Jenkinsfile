@@ -21,42 +21,45 @@ pipeline {
       }
     }
 
-    stage('Pull RBVM Scanner Image') {
-      steps {
-        sh 'docker pull $SCANNER_IMAGE'
-      }
-    }
-
-    stage('Run RBVM Scanner') {
+    stage('🛡️ Run RBVM Scanner') {
       steps {
         sh '''
+          echo "Pulling scanner image..."
+          docker pull $SCANNER_IMAGE
+
+          echo "Running RBVM scanner..."
           docker run --rm \
             -v $WORKSPACE:/scanner \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -p 8501:8501 \
             $SCANNER_IMAGE $APP_IMAGE
+
+          echo "Checking for Act ASAP CVEs..."
+          count=$(jq '[.[] | select(.decision=="Act ASAP")] | length' decision_engine/prioritized_cves.json)
+          echo "Found $count Act ASAP CVEs"
+          if [ "$count" -gt 0 ]; then
+            echo "Build failed: Act ASAP vulnerabilities detected"
+            exit 1
+          fi
         '''
       }
     }
 
-    stage('Fail if Act ASAP CVEs Found') {
+    stage('📦 Push Artifact (Placeholder)') {
       steps {
-        script {
-          def count = sh(
-            script: "jq '[.[] | select(.decision==\"Act ASAP\")] | length' decision_engine/prioritized_cves.json",
-            returnStdout: true
-          ).trim()
-          
-          echo "Found ${count} Act ASAP CVEs"
-
-          if (count.toInteger() > 0) {
-            error("Build failed: Act ASAP CVEs present!")
-          }
-        }
+        echo '🎯 [Simulated] Pushing built image and reports to Nexus/Artifactory...'
+        sleep 2
       }
     }
 
-    stage('📤 Archive Prioritized CVEs') {
+    stage('🔔 Notify Security Team (Placeholder)') {
+      steps {
+        echo '📣 [Simulated] Sending Slack/email alert to security team...'
+        sleep 2
+      }
+    }
+    
+    stage('Archive Prioritized CVEs') {
       steps {
         archiveArtifacts artifacts: 'target/prioritized_cves.json', fingerprint: true
       }
