@@ -15,8 +15,9 @@ pipeline {
 
     stage('Build App Docker Image') {
       steps {
-        sh 'docker build -t $APP_IMAGE .'
-      }
+        sh '''
+          docker pull vulhub/flask:1.1.1 #instead of building the image, pulling the vulnerabile image from vulhub.
+        '''
     }
 
     stage('Pull RBVM Scanner Image') {
