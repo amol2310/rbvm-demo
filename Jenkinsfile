@@ -29,7 +29,7 @@ pipeline {
 
           echo "Running RBVM scanner..."
           docker run --rm \
-            -v \$WORKSPACE:/scanner/scanner_output \
+            -v \$WORKSPACE:/scanner \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -p 8501:8501 \
             $SCANNER_IMAGE $APP_IMAGE
@@ -43,7 +43,7 @@ pipeline {
       steps {
         script {
           def count = sh(
-            script: "jq '[.[] | select(.decision==\"Act ASAP\")] | length' ${env.WORKSPACE}/target/prioritized_cves.json",
+            script: "jq '[.[] | select(.decision==\"Act ASAP\")] | length' ${env.WORKSPACE}/scanner_output/target/prioritized_cves.json",
             returnStdout: true
           ).trim()
 
