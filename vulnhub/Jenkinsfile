@@ -29,6 +29,7 @@ pipeline {
 
           echo "Running RBVM scanner..."
           docker run --rm \
+            -v $WORKSPACE:/scanner \
             -p 8501:8501 \
             $SCANNER_IMAGE $APP_IMAGE 
 
