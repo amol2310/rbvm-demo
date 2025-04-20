@@ -13,6 +13,7 @@ This setup runs Jenkins with:
 ### 1. Build and Start Jenkins
 
 ```bash
+cd jenkins-setup
 docker-compose up --build -d
 ```
 
