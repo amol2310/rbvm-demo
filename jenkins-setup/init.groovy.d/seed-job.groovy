@@ -24,7 +24,7 @@ if (jenkins.getItem(jobName) == null) {
         []
     )
 
-    def definition = new CpsScmFlowDefinition(scm, "vulnhub/Jenkinsfile")
+    def definition = new CpsScmFlowDefinition(scm, "Jenkinsfile")
     definition.setLightweight(true)
     job.definition = definition
 
