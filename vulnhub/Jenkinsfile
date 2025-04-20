@@ -1,0 +1,79 @@
+pipeline {
+  agent {
+    docker {
+      image 'python:3.11'
+      args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
+    }
+  }
+
+  environment {
+    APP_IMAGE = "my-app-image:latest"
+    SCANNER_IMAGE = "maratheamol2310/rbvm:latest"
+  }
+
+  stages {
+    stage('Checkout Code') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Build App Docker Image') {
+      steps {
+        sh 'docker build -t $APP_IMAGE .'
+      }
+    }
+
+    stage('Pull RBVM Scanner Image') {
+      steps {
+        sh 'docker pull $SCANNER_IMAGE'
+      }
+    }
+
+    stage('Run RBVM Scanner') {
+      steps {
+        sh '''
+          docker run --rm \
+            -v $WORKSPACE:/scanner \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -p 8501:8501 \
+            $SCANNER_IMAGE $APP_IMAGE
+        '''
+      }
+    }
+
+    stage('Fail if Act ASAP CVEs Found') {
+      steps {
+        script {
+          def count = sh(
+            script: "jq '[.[] | select(.decision==\"Act ASAP\")] | length' decision_engine/prioritized_cves.json",
+            returnStdout: true
+          ).trim()
+          
+          echo "Found ${count} Act ASAP CVEs"
+
+          if (count.toInteger() > 0) {
+            error("Build failed: Act ASAP CVEs present!")
+          }
+        }
+      }
+    }
+
+    stage('📤 Archive Prioritized CVEs') {
+      steps {
+        archiveArtifacts artifacts: 'target/prioritized_cves.json', fingerprint: true
+      }
+    }
+  }
+
+  post {
+    success {
+      echo 'RBVM scan completed successfully.'
+      echo 'Visit http://localhost:8501 for dashboard.'
+    }
+    failure {
+      echo 'Scan failed due to high-risk CVEs.'
+      echo 'Visit http://localhost:8501 for dashboard.'
+    }
+  }
+}
