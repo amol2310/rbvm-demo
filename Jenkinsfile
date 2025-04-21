@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     APP_IMAGE = "vulhub/flask:1.1.1"
-    SCANNER_IMAGE = "maratheamol2310/rbvm:1.0.2"
+    SCANNER_IMAGE = "amarathe:latest"
   }
 
   stages {
