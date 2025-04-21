@@ -25,7 +25,7 @@ pipeline {
       steps {
         sh '''
           echo "Pulling scanner image..."
-          docker pull $SCANNER_IMAGE
+          #docker pull $SCANNER_IMAGE
 
           echo "Running RBVM scanner..."
           docker run --rm \
