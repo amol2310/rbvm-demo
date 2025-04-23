@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     APP_IMAGE = "vulhub/flask:1.1.1"
-    SCANNER_IMAGE = "amarathe:latest"
+    SCANNER_IMAGE = "maratheamol2310/rbvm:1.0.3"
   }
 
   stages {
@@ -25,7 +25,7 @@ pipeline {
       steps {
         sh '''
           echo "Pulling scanner image..."
-          #docker pull $SCANNER_IMAGE
+          docker pull $SCANNER_IMAGE
 
           echo "Running RBVM scanner..."
           docker run --rm \
