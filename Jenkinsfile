@@ -41,7 +41,22 @@ pipeline {
             --name rbvm-dashboard \
             $SCANNER_DASHBOARD
 
-
+          CT_ASAP_COUNT=$(jq '[.[] | select(.decision=="Act ASAP")] | length' \$WORKSPACE/target/prioritized_cves.json)
+          ACT_COUNT=$(jq '[.[] | select(.decision=="Act")] | length' \$WORKSPACE/target/prioritized_cves.json)
+          
+          echo "Act ASAP CVEs: $ACT_ASAP_COUNT"
+          echo "Act CVEs: $ACT_COUNT"
+          
+          # Fail build if any Act ASAP or Act CVEs exist
+          if [ "$ACT_ASAP_COUNT" -gt 0 ] || [ "$ACT_COUNT" -gt 0 ]; then
+            echo "High-risk vulnerabilities detected (Act ASAP or Act). Failing build..."
+            echo "Check the dashboard for vulnerabilities and remediation suggestions"
+            exit 1
+          else
+            echo "No high-risk vulnerabilities. Build may proceed."
+            exit 0
+          fi
+          
           echo "RBVM scan completed."
         '''
       }
