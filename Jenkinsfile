@@ -37,9 +37,9 @@ pipeline {
           docker run -d \
             -p 8501:8501 \
             -v \$WORKSPACE:/scanner/scanner_output \
-            -v /var/run/docker.sock:/var/run/docker.sock \
             --name rbvm-dashboard \
             $SCANNER_IMAGE $APP_IMAGE
+
 
           echo "RBVM scan completed."
         '''
