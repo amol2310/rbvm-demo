@@ -42,7 +42,7 @@ pipeline {
             --name rbvm-dashboard \
             $SCANNER_DASHBOARD
 
-          CT_ASAP_COUNT=$(jq '[.[] | select(.decision=="Act ASAP")] | length' \$WORKSPACE/target/prioritized_cves.json)
+          ACT_ASAP_COUNT=$(jq '[.[] | select(.decision=="Act ASAP")] | length' \$WORKSPACE/target/prioritized_cves.json)
           ACT_COUNT=$(jq '[.[] | select(.decision=="Act")] | length' \$WORKSPACE/target/prioritized_cves.json)
           
           echo "Act ASAP CVEs: $ACT_ASAP_COUNT"
