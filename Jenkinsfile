@@ -28,11 +28,11 @@ pipeline {
           docker pull $SCANNER_IMAGE
 
           echo "Running RBVM scanner..."
-          // docker run --rm \
-          //   -v \$WORKSPACE:/scanner/scanner_output \
-          //   -v /var/run/docker.sock:/var/run/docker.sock \
-          //   -p 8501:8501 \
-          //   $SCANNER_IMAGE $APP_IMAGE
+          # docker run --rm \
+          #   -v \$WORKSPACE:/scanner/scanner_output \
+          #   -v /var/run/docker.sock:/var/run/docker.sock \
+          #   -p 8501:8501 \
+          #   $SCANNER_IMAGE $APP_IMAGE
 
           docker run -d \
             -p 8501:8501 \
