@@ -39,7 +39,7 @@ pipeline {
             -v \$WORKSPACE/scanner_output:/scanner/scanner_output \
             --name rbvm-dashboard \
             maratheamol2310/rbvm:1.0.4 \
-            streamlit run dashboard/streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+            streamlit run /scanner/dashboard/streamlit_app.py --server.port 8501 --server.address 0.0.0.0
 
           echo "RBVM scan completed."
         '''
