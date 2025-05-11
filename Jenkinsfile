@@ -25,6 +25,7 @@ pipeline {
     stage('Run RBVM Scanner') {
       steps {
         sh '''
+          set +x
           echo "Pulling scanner image..."
           docker pull $SCANNER_IMAGE
 
