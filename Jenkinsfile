@@ -4,6 +4,7 @@ pipeline {
   environment {
     APP_IMAGE = "vulhub/flask:1.1.1"
     SCANNER_IMAGE = "maratheamol2310/rbvm:1.0.4"
+    SCANNER_DASHBOARD = "maratheamol2310/rbvm:2.0.0"
   }
 
   stages {
@@ -33,13 +34,13 @@ pipeline {
            -p 8501:8501 \
            $SCANNER_IMAGE $APP_IMAGE
 
-          echo "Launching dashboard at localhost:8501"
+           echo "Launching dashboard at localhost:8501"
            docker run -d \
             -p 8501:8501 \
-            -v \$WORKSPACE/scanner_output:/scanner/scanner_output \
+            -v \$WORKSPACE/scanner_output:/app/scanner_output \
             --name rbvm-dashboard \
-            maratheamol2310/rbvm:1.0.4 \
-            streamlit run /scanner/dashboard/streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+            $SCANNER_DASHBOARD
+
 
           echo "RBVM scan completed."
         '''
