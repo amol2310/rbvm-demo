@@ -37,7 +37,7 @@ pipeline {
            echo "Launching dashboard at localhost:8501"
            docker run -d \
             -p 8501:8501 \
-            -v \$WORKSPACE/scanner_output:/app/scanner_output \
+            -v \$WORKSPACE/target:/app/scanner_output/target \
             --name rbvm-dashboard \
             $SCANNER_DASHBOARD
 
