@@ -39,8 +39,7 @@ pipeline {
             -v \$WORKSPACE:/scanner/scanner_output \
             -v /var/run/docker.sock:/var/run/docker.sock \
             --name rbvm-dashboard \
-            $SCANNER_IMAGE $APP_IMAGE \
-            /bin/bash -c "entrypoint.sh && tail -f /dev/null"
+            $SCANNER_IMAGE $APP_IMAGE
 
           echo "RBVM scan completed."
         '''
