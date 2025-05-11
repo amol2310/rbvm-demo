@@ -28,18 +28,18 @@ pipeline {
           docker pull $SCANNER_IMAGE
 
           echo "Running RBVM scanner..."
-          # docker run --rm \
-          #   -v \$WORKSPACE:/scanner/scanner_output \
-          #   -v /var/run/docker.sock:/var/run/docker.sock \
-          #   -p 8501:8501 \
-          #   $SCANNER_IMAGE $APP_IMAGE
+          docker run --rm \
+           -v \$WORKSPACE:/scanner/scanner_output \
+           -p 8501:8501 \
+           $SCANNER_IMAGE $APP_IMAGE
 
-          docker run -d \
+          echo "Launching dashboard at localhost:8501"
+           docker run -d \
             -p 8501:8501 \
-            -v \$WORKSPACE:/scanner/scanner_output \
+            -v \$WORKSPACE/scanner_output:/scanner/scanner_output \
             --name rbvm-dashboard \
-            $SCANNER_IMAGE $APP_IMAGE
-
+            maratheamol2310/rbvm:1.0.4 \
+            streamlit run dashboard/streamlit_app.py --server.port 8501 --server.address 0.0.0.0
 
           echo "RBVM scan completed."
         '''
