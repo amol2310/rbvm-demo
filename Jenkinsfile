@@ -4,7 +4,7 @@ pipeline {
   environment {
     APP_IMAGE = "vulhub/flask:1.1.1"
     SCANNER_IMAGE = "maratheamol2310/rbvm:1.0.4"
-    SCANNER_DASHBOARD = "maratheamol2310/rbvm:2.0.0"
+    SCANNER_DASHBOARD = "maratheamol2310/rbvm-dashboard:1.0.0"
   }
 
   stages {
@@ -17,7 +17,7 @@ pipeline {
     stage('Build App Docker Image') {
       steps {
         sh '''
-          docker pull vulhub/flask:1.1.1 #instead of building the image, pulling the vulnerabile image from vulhub.
+          docker pull $APP_IMAGE #instead of building the image, pulling the vulnerabile image from vulhub.
         '''
       }
     }
