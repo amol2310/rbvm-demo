@@ -4,7 +4,7 @@ pipeline {
   environment {
     APP_IMAGE = "vulhub/flask:1.1.1"
     //APP_IMAGE = "oraclelinux:9-slim"
-    SCANNER_IMAGE = "maratheamol2310/rbvm:1.0.4"
+    SCANNER_IMAGE = "maratheamol2310/rbvm:1.0.5"
     SCANNER_DASHBOARD = "maratheamol2310/rbvm-dashboard:1.0.0"
   }
 
